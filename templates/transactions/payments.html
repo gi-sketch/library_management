@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Fine & Payment Management - LibManager
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/fines.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="fines-page-container">
+
+    <div class="fines-main-card">
+
+        <!-- Header -->
+        <div class="fines-header">
+            <div>
+                <h1>Fine & Payment Management</h1>
+                <p>System-wide view of overdue library fines, transaction receipts, and revenue collection</p>
+            </div>
+            <a href="{% url 'dashboard' %}" class="nav-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="fines-stats-grid">
+            <div class="fine-stat-card stat-total">
+                <h5>Total Fines</h5>
+                <h2>₹{{ total_fines_amount }}</h2>
+                <small style="color: #93c5fd;">Cumulative overdue fines</small>
+            </div>
+
+            <div class="fine-stat-card stat-paid">
+                <h5>Paid Amount</h5>
+                <h2>₹{{ paid_amount }}</h2>
+                <small style="color: #34d399;">{{ paid_fines_count }} transaction{{ paid_fines_count|pluralize }} settled</small>
+            </div>
+
+            <div class="fine-stat-card stat-unpaid">
+                <h5>Unpaid Amount</h5>
+                <h2>₹{{ unpaid_amount }}</h2>
+                <small style="color: #f87171;">Pending collection</small>
+            </div>
+
+            <div class="fine-stat-card stat-unpaid">
+                <h5>Number of Unpaid Fines</h5>
+                <h2>{{ unpaid_fines_count }}</h2>
+                <small style="color: #fca5a5;">Outstanding fine records</small>
+            </div>
+        </div>
+
+        <!-- Toolbar: Filtering and Search -->
+        <div class="fines-toolbar">
+            <div class="filter-pills">
+                <a href="{% url 'librarian_payments' %}?status=all{% if search_query %}&q={{ search_query }}{% endif %}"
+                   class="filter-pill {% if status_filter == 'all' %}active{% endif %}">
+                    All Fines
+                </a>
+                <a href="{% url 'librarian_payments' %}?status=unpaid{% if search_query %}&q={{ search_query }}{% endif %}"
+                   class="filter-pill {% if status_filter == 'unpaid' %}active{% endif %}">
+                    ● Unpaid ({{ unpaid_fines_count }})
+                </a>
+                <a href="{% url 'librarian_payments' %}?status=paid{% if search_query %}&q={{ search_query }}{% endif %}"
+                   class="filter-pill {% if status_filter == 'paid' %}active{% endif %}">
+                    ✓ Paid ({{ paid_fines_count }})
+                </a>
+            </div>
+
+            <form method="GET" action="{% url 'librarian_payments' %}" class="fines-search-box">
+                <input type="hidden" name="status" value="{{ status_filter }}">
+                <input type="text"
+                       name="q"
+                       value="{{ search_query }}"
+                       placeholder="Search by student, book, or ref ID...">
+            </form>
+        </div>
+
+        <!-- Fines and Payments Table -->
+        <div class="fines-table-wrapper">
+            <table class="fines-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Due Date</th>
+                        <th>Fine Amount</th>
+                        <th>Status</th>
+                        <th>Paid Date</th>
+                        <th>Payment Reference</th>
+                        <th>Receipt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fine in fines %}
+                    <tr>
+                        <td>
+                            <strong>{{ fine.member.user.username }}</strong>
+                            {% if fine.member.user.get_full_name %}
+                                <br><small style="color: #afb3b7;">{{ fine.member.user.get_full_name }}</small>
+                            {% endif %}
+                            <br><small style="color: #69818d;">{{ fine.member.user.email }}</small>
+                        </td>
+
+                        <td>
+                            <strong>{{ fine.issue_book.book.title }}</strong>
+                            <br><small style="color: #afb3b7;">Overdue: {{ fine.overdue_days }} day{{ fine.overdue_days|pluralize }}</small>
+                        </td>
+
+                        <td>
+                            {{ fine.issue_book.due_date|date:"d M Y" }}
+                        </td>
+
+                        <td>
+                            <strong style="color: #ffffff; font-size: 15px;">₹{{ fine.amount }}</strong>
+                        </td>
+
+                        <td>
+                            {% if fine.status == 'unpaid' %}
+                                <span class="badge-status badge-status-unpaid">
+                                    ● Unpaid
+                                </span>
+                            {% else %}
+                                <span class="badge-status badge-status-paid">
+                                    ✓ Paid
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if fine.paid_at %}
+                                {{ fine.paid_at|date:"d M Y, h:i A" }}
+                            {% else %}
+                                <span style="color: #6b7280;">—</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if fine.payment_reference %}
+                                <code style="background: rgba(255,255,255,0.08); padding: 4px 8px; border-radius: 6px; color: #93c5fd; font-size: 12px;">
+                                    {{ fine.payment_reference }}
+                                </code>
+                            {% else %}
+                                <span style="color: #6b7280;">Pending</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if fine.status == 'paid' %}
+                                <a href="{% url 'payment_receipt' fine.id %}" class="btn-receipt">
+                                    📄 Receipt
+                                </a>
+                            {% else %}
+                                <span style="color: #6b7280; font-size: 13px;">Unpaid</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <div class="empty-state-icon">📂</div>
+                            <h4 style="color: #ffffff; margin-bottom: 6px;">No Records Found</h4>
+                            <p style="margin: 0;">No fine or payment records matching the selected criteria.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

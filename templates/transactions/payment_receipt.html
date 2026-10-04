@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Payment Receipt #{{ fine.id }} - LibManager
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/fines.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="fines-page-container">
+
+    <div class="receipt-container">
+
+        <div class="receipt-card" id="printableReceipt">
+
+            <!-- Receipt Header -->
+            <div class="receipt-header">
+                <h2>📚 Library Management System</h2>
+                <p>Official Fine Payment Receipt & Settlement Certificate</p>
+                <div style="margin-top: 10px;">
+                    <span class="badge-status badge-status-paid">
+                        ✓ PAYMENT SETTLED & VERIFIED
+                    </span>
+                </div>
+            </div>
+
+            <!-- Receipt Metadata Grid -->
+            <div class="receipt-grid">
+                <div class="receipt-group">
+                    <label>Receipt Reference</label>
+                    <span>#REC-{{ fine.id|stringformat:"05d" }}</span>
+                </div>
+
+                <div class="receipt-group">
+                    <label>Payment Date & Time</label>
+                    <span>{{ fine.paid_at|date:"d F Y, h:i A"|default:"Recently Paid" }}</span>
+                </div>
+
+                <div class="receipt-group">
+                    <label>Student Name</label>
+                    <span>{{ student.get_full_name|default:student.username|title }}</span>
+                </div>
+
+                <div class="receipt-group">
+                    <label>Student Email</label>
+                    <span>{{ student.email|default:"Not specified" }}</span>
+                </div>
+
+                <div class="receipt-group">
+                    <label>Student Phone</label>
+                    <span>{{ profile.phone|default:"—" }}</span>
+                </div>
+
+                <div class="receipt-group">
+                    <label>Transaction ID / Gateway Ref</label>
+                    <span style="font-family: monospace; font-size: 14px; color: #93c5fd;">
+                        {{ fine.payment_reference|default:"pay_sim_settled" }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Book & Issue Particulars -->
+            <div style="margin-bottom: 25px;">
+                <h4 style="color: #ffffff; font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+                    Borrowing Particulars
+                </h4>
+
+                <div class="receipt-grid">
+                    <div class="receipt-group">
+                        <label>Book Title</label>
+                        <span>{{ book.title }}</span>
+                    </div>
+
+                    <div class="receipt-group">
+                        <label>ISBN & Category</label>
+                        <span>{{ book.isbn }} ({{ book.category }})</span>
+                    </div>
+
+                    <div class="receipt-group">
+                        <label>Issue Date</label>
+                        <span>{{ issue.issue_date|date:"d M Y" }}</span>
+                    </div>
+
+                    <div class="receipt-group">
+                        <label>Due Date</label>
+                        <span>{{ issue.due_date|date:"d M Y" }}</span>
+                    </div>
+
+                    <div class="receipt-group">
+                        <label>Return Date</label>
+                        <span>
+                            {% if issue.returned and issue.return_date %}
+                                {{ issue.return_date|date:"d M Y" }} (Returned)
+                            {% else %}
+                                Not returned yet
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="receipt-group">
+                        <label>Overdue Days</label>
+                        <span style="color: #f87171;">{{ fine.overdue_days }} Day{{ fine.overdue_days|pluralize }} (@ ₹{{ daily_rate }}/day)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Total Banner -->
+            <div class="receipt-total-banner">
+                <div>
+                    <h3>Fine Amount Paid</h3>
+                    <small style="color: #afb3b7;">Includes all overdue duration charges</small>
+                </div>
+                <div class="total-amount">
+                    ₹{{ fine.amount }}
+                </div>
+            </div>
+
+            <p style="text-align: center; color: #afb3b7; font-size: 12px; margin: 0;">
+                This is a computer generated receipt issued by LibManager. No physical signature required.
+            </p>
+
+            <!-- Actions -->
+            <div class="receipt-actions">
+                <button type="button" onclick="window.print()" class="btn-print">
+                    🖨️ Print / Download Receipt
+                </button>
+
+                {% if request.user.profile.role == 'student' %}
+                    <a href="{% url 'student_fines' %}" class="nav-btn">
+                        ← Back to My Fines
+                    </a>
+                {% else %}
+                    <a href="{% url 'librarian_payments' %}" class="nav-btn">
+                        ← Back to All Payments
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

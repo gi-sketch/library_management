@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+My Fines - LibManager
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/fines.css' %}">
+{% endblock %}
+
+{% block extra_head %}
+<!-- Razorpay Checkout SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="fines-page-container">
+
+    <div class="fines-main-card">
+
+        <!-- Header -->
+        <div class="fines-header">
+            <div>
+                <h1>My Library Fines & Payments</h1>
+                <p>Track your overdue fines and complete online payments securely (Daily fine rate: ₹{{ daily_rate }}/day)</p>
+            </div>
+            <a href="{% url 'dashboard' %}" class="nav-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="fines-stats-grid">
+            <div class="fine-stat-card stat-unpaid">
+                <h5>Total Unpaid Fine</h5>
+                <h2>₹{{ total_unpaid }}</h2>
+                <small style="color: #f87171;">{{ unpaid_count }} pending item{{ unpaid_count|pluralize }}</small>
+            </div>
+
+            <div class="fine-stat-card stat-paid">
+                <h5>Total Paid Fine</h5>
+                <h2>₹{{ total_paid }}</h2>
+                <small style="color: #34d399;">{{ paid_count }} cleared item{{ paid_count|pluralize }}</small>
+            </div>
+
+            <div class="fine-stat-card stat-total">
+                <h5>Daily Overdue Rate</h5>
+                <h2>₹{{ daily_rate }}</h2>
+                <small style="color: #afb3b7;">Per day past due date</small>
+            </div>
+        </div>
+
+        <!-- Fines Table -->
+        <div class="fines-table-wrapper">
+            <table class="fines-table">
+                <thead>
+                    <tr>
+                        <th>Book</th>
+                        <th>Due Date</th>
+                        <th>Overdue Days</th>
+                        <th>Fine Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fine in fines %}
+                    <tr>
+                        <td>
+                            <strong>{{ fine.issue_book.book.title }}</strong>
+                            <br><small style="color: #afb3b7;">Author: {{ fine.issue_book.book.author }} | ISBN: {{ fine.issue_book.book.isbn }}</small>
+                        </td>
+
+                        <td>
+                            {{ fine.issue_book.due_date|date:"d F Y" }}
+                        </td>
+
+                        <td>
+                            {% if fine.overdue_days > 0 %}
+                                <span style="color: #fca5a5; font-weight: 600;">{{ fine.overdue_days }} day{{ fine.overdue_days|pluralize }}</span>
+                            {% else %}
+                                <span style="color: #afb3b7;">0 days</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <strong style="color: #ffffff; font-size: 16px;">₹{{ fine.amount }}</strong>
+                        </td>
+
+                        <td>
+                            {% if fine.status == 'unpaid' %}
+                                <span class="badge-status badge-status-unpaid">
+                                    ● Unpaid
+                                </span>
+                            {% else %}
+                                <span class="badge-status badge-status-paid">
+                                    ✓ Paid
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if fine.status == 'unpaid' %}
+                                <button type="button"
+                                        id="pay-btn-{{ fine.id }}"
+                                        onclick="initiatePayment({{ fine.id }})"
+                                        class="btn-pay-now">
+                                    💳 Pay Now
+                                </button>
+                            {% else %}
+                                <a href="{% url 'payment_receipt' fine.id %}"
+                                   class="btn-receipt">
+                                    📄 View Receipt
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <div class="empty-state-icon">🎉</div>
+                            <h4 style="color: #ffffff; margin-bottom: 6px;">No Fines Found</h4>
+                            <p style="margin: 0;">You have no outstanding or previous overdue fines. Keep up the good reading!</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/razorpay_checkout.js' %}"></script>
+{% endblock %}

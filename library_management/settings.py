@@ -130,3 +130,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# ==========================================
+# LIBRARY FINE & PAYMENT CONFIGURATION
+# ==========================================
+from decimal import Decimal
+
+# Configurable daily fine rate (default: ₹5 per overdue day)
+DAILY_FINE_RATE = Decimal(os.environ.get('DAILY_FINE_RATE', '5.00'))
+
+# Razorpay API Credentials (set via environment variables or test keys)
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_51exampleKeyId')
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'test_secret_example_12345')

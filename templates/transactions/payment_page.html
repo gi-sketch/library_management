@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Pay Fine - LibManager
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/fines.css' %}">
+<style>
+    .checkout-card {
+        max-width: 580px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+    }
+    .checkout-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        color: #afb3b7;
+        font-size: 15px;
+    }
+    .checkout-row strong {
+        color: #ffffff;
+    }
+    .checkout-total {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-radius: 14px;
+        padding: 18px 22px;
+        margin: 25px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .checkout-total span {
+        font-size: 16px;
+        color: #ffffff;
+    }
+    .checkout-total h2 {
+        color: #34d399;
+        margin: 0;
+        font-size: 30px;
+    }
+    .btn-checkout-pay {
+        width: 100%;
+        background: #059669;
+        color: #ffffff !important;
+        border: none;
+        padding: 15px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        display: block;
+        text-align: center;
+    }
+    .btn-checkout-pay:hover {
+        background: #047857;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="fines-page-container">
+
+    <div class="checkout-card">
+
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 44px; margin-bottom: 10px;">💳</div>
+            <h2 style="color: #ffffff; font-size: 26px; margin-bottom: 6px;">Library Fine Payment</h2>
+            <p style="color: #afb3b7; margin: 0; font-size: 14px;">Review your checkout details and proceed to secure payment</p>
+        </div>
+
+        <div>
+            <div class="checkout-row">
+                <span>Student</span>
+                <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+            </div>
+
+            <div class="checkout-row">
+                <span>Book Title</span>
+                <strong>{{ fine.issue_book.book.title }}</strong>
+            </div>
+
+            <div class="checkout-row">
+                <span>Author</span>
+                <strong>{{ fine.issue_book.book.author }}</strong>
+            </div>
+
+            <div class="checkout-row">
+                <span>Issue Date</span>
+                <strong>{{ fine.issue_book.issue_date|date:"d M Y" }}</strong>
+            </div>
+
+            <div class="checkout-row">
+                <span>Due Date</span>
+                <strong>{{ fine.issue_book.due_date|date:"d M Y" }}</strong>
+            </div>
+
+            <div class="checkout-row">
+                <span>Days Overdue</span>
+                <strong style="color: #f87171;">{{ fine.overdue_days }} days</strong>
+            </div>
+        </div>
+
+        <div class="checkout-total">
+            <span>Payable Amount:</span>
+            <h2>₹{{ fine.amount }}</h2>
+        </div>
+
+        <button type="button"
+                id="pay-btn-{{ fine.id }}"
+                onclick="initiatePayment({{ fine.id }})"
+                class="btn-checkout-pay">
+            Pay ₹{{ fine.amount }} via Razorpay
+        </button>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'student_fines' %}" style="color: #afb3b7; text-decoration: none; font-size: 14px;">
+                ← Cancel and return to Fines
+            </a>
+        </div>
+
+        <p style="text-align: center; margin-top: 20px; font-size: 12px; color: #69818d;">
+            🔒 256-Bit SSL Encrypted | Razorpay Payment Gateway
+        </p>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/razorpay_checkout.js' %}"></script>
+{% endblock %}

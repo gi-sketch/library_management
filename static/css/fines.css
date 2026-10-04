@@ -1,0 +1,472 @@
+/* ==========================================================================
+   LIBRARY MANAGEMENT SYSTEM - FINES & PAYMENTS STYLESHEET
+   Design Language: Glassmorphism / Dark Theme
+   Background: #0d1f23 | Secondary: #132e35 | Cards: rgba(255,255,255,0.05)
+   ========================================================================== */
+
+.fines-page-container {
+    min-height: 100vh;
+    padding: 120px 50px;
+    background: linear-gradient(135deg, #0d1f23, #132e35, #2d4a53);
+}
+
+.fines-main-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    margin-bottom: 30px;
+}
+
+/* Header Section */
+.fines-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.fines-header h1 {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.fines-header p {
+    color: #afb3b7;
+    font-size: 15px;
+    margin: 0;
+}
+
+/* Stats Metric Cards */
+.fines-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 35px;
+}
+
+.fine-stat-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 24px;
+    transition: all 0.3s ease;
+}
+
+.fine-stat-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.fine-stat-card.stat-unpaid {
+    border-left: 4px solid #ef4444;
+}
+
+.fine-stat-card.stat-paid {
+    border-left: 4px solid #10b981;
+}
+
+.fine-stat-card.stat-total {
+    border-left: 4px solid #3b82f6;
+}
+
+.fine-stat-card h5 {
+    color: #afb3b7;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.fine-stat-card h2 {
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.fine-stat-card small {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+}
+
+/* Toolbar: Filters and Search */
+.fines-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.filter-pills {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filter-pill {
+    padding: 8px 18px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #afb3b7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.filter-pill:hover,
+.filter-pill.active {
+    background: #69818d;
+    color: #ffffff !important;
+    border-color: #69818d;
+}
+
+.fines-search-box {
+    position: relative;
+    min-width: 280px;
+}
+
+.fines-search-box input {
+    width: 100%;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.fines-search-box input:focus {
+    border-color: #69818d;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(105, 129, 141, 0.4);
+}
+
+/* Data Table */
+.fines-table-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fines-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.fines-table thead {
+    background: #2d4a53;
+}
+
+.fines-table th {
+    padding: 18px 20px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.fines-table td {
+    padding: 18px 20px;
+    color: #afb3b7;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.fines-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.fines-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.fines-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status Badges */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge-status-unpaid {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.badge-status-paid {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+/* Action Buttons */
+.btn-pay-now {
+    background: #059669;
+    color: #ffffff !important;
+    padding: 8px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-pay-now:hover {
+    background: #047857;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+}
+
+.btn-receipt {
+    background: #2563eb;
+    color: #ffffff !important;
+    padding: 8px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s;
+}
+
+.btn-receipt:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #afb3b7;
+}
+
+.empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   RECEIPT CARD & PRINT STYLING
+   ========================================================================== */
+
+.receipt-container {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.receipt-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    padding: 45px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+    position: relative;
+}
+
+.receipt-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+    border-radius: 24px 24px 0 0;
+}
+
+.receipt-header {
+    text-align: center;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+}
+
+.receipt-header h2 {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.receipt-header p {
+    color: #afb3b7;
+    font-size: 14px;
+    margin: 0;
+}
+
+.receipt-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.receipt-group {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 16px 20px;
+}
+
+.receipt-group label {
+    display: block;
+    color: #afb3b7;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.receipt-group span {
+    display: block;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.receipt-total-banner {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 16px;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.receipt-total-banner h3 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 18px;
+}
+
+.receipt-total-banner .total-amount {
+    color: #34d399;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.receipt-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn-print {
+    background: #69818d;
+    color: #ffffff !important;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-print:hover {
+    background: #2d4a53;
+}
+
+/* ==========================================================================
+   PRINT MEDIA STYLES FOR CRISP RECEIPT EXPORT / PDF
+   ========================================================================== */
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    .navbar-custom,
+    .receipt-actions,
+    nav,
+    footer {
+        display: none !important;
+    }
+
+    .fines-page-container {
+        padding: 0 !important;
+        background: none !important;
+    }
+
+    .receipt-card {
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #cccccc !important;
+        box-shadow: none !important;
+        padding: 20px !important;
+    }
+
+    .receipt-header h2,
+    .receipt-group span,
+    .receipt-total-banner h3 {
+        color: #000000 !important;
+    }
+
+    .receipt-header p,
+    .receipt-group label {
+        color: #555555 !important;
+    }
+
+    .receipt-group {
+        background: #f8f9fa !important;
+        border: 1px solid #e5e7eb !important;
+    }
+
+    .receipt-total-banner {
+        background: #ecfdf5 !important;
+        border: 1px solid #10b981 !important;
+    }
+
+    .receipt-total-banner .total-amount {
+        color: #047857 !important;
+    }
+
+    .badge-status-paid {
+        background: #dcfce7 !important;
+        color: #166534 !important;
+        border: 1px solid #86efac !important;
+    }
+}

@@ -71,6 +71,18 @@
                     Dashboard
                 </a>
 
+                {% if request.user.profile.role == 'student' %}
+                    <a href="{% url 'student_fines' %}"
+                       class="nav-btn">
+                        My Fines
+                    </a>
+                {% elif request.user.profile.role == 'admin' or request.user.profile.role == 'librarian' %}
+                    <a href="{% url 'librarian_payments' %}"
+                       class="nav-btn">
+                        Fine Payments
+                    </a>
+                {% endif %}
+
                 <a href="{% url 'logout' %}"
                    class="login-btn">
                     Logout

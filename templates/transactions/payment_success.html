@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Payment Successful - LibManager
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/fines.css' %}">
+<style>
+    .success-card {
+        max-width: 600px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-radius: 24px;
+        padding: 45px;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        text-align: center;
+    }
+    .success-badge-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(16, 185, 129, 0.2);
+        border: 2px solid #10b981;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        color: #34d399;
+        margin: 0 auto 20px auto;
+        animation: scaleIn 0.5s ease-out;
+    }
+    @keyframes scaleIn {
+        0% { transform: scale(0.5); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+    .success-details {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 20px;
+        margin: 25px 0;
+        text-align: left;
+    }
+    .success-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 14px;
+        color: #afb3b7;
+    }
+    .success-row:last-child {
+        border-bottom: none;
+    }
+    .success-row strong {
+        color: #ffffff;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="fines-page-container">
+
+    <div class="success-card">
+
+        <div class="success-badge-icon">
+            ✓
+        </div>
+
+        <h1 style="color: #ffffff; font-size: 28px; margin-bottom: 8px;">Payment Successful!</h1>
+        <p style="color: #afb3b7; font-size: 15px; margin: 0;">
+            Your library fine has been cleared successfully. Thank you!
+        </p>
+
+        <div class="success-details">
+            <div class="success-row">
+                <span>Book Title:</span>
+                <strong>{{ fine.issue_book.book.title }}</strong>
+            </div>
+
+            <div class="success-row">
+                <span>Amount Paid:</span>
+                <strong style="color: #34d399; font-size: 16px;">₹{{ fine.amount }}</strong>
+            </div>
+
+            <div class="success-row">
+                <span>Payment Reference:</span>
+                <code>{{ fine.payment_reference }}</code>
+            </div>
+
+            <div class="success-row">
+                <span>Date & Time:</span>
+                <strong>{{ fine.paid_at|date:"d M Y, h:i A" }}</strong>
+            </div>
+
+            <div class="success-row">
+                <span>Status:</span>
+                <span class="badge-status badge-status-paid">● Cleared / Paid</span>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'payment_receipt' fine.id %}" class="btn-receipt" style="padding: 12px 24px; font-size: 15px;">
+                📄 View Official Receipt
+            </a>
+
+            <a href="{% url 'student_fines' %}" class="nav-btn" style="padding: 12px 24px; font-size: 15px;">
+                Back to Fines
+            </a>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -2,27 +2,96 @@
 {% load static %}
 
 {% block title %}
-Dashboard
+Dashboard - LibManager
 {% endblock %}
 
 {% block css %}
-<link rel="stylesheet"
-      href="{% static 'css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<style>
+    .alert-banner {
+        background: rgba(220, 38, 38, 0.15);
+        border: 1px solid rgba(220, 38, 38, 0.4);
+        border-radius: 16px;
+        padding: 18px 24px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        backdrop-filter: blur(10px);
+        animation: pulseAlert 2s infinite alternate;
+    }
+
+    @keyframes pulseAlert {
+        0% { box-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+        100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
+    }
+
+    .alert-banner-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .alert-icon {
+        font-size: 28px;
+    }
+
+    .alert-banner h4 {
+        margin: 0 0 4px 0;
+        color: #fca5a5;
+        font-size: 18px;
+    }
+
+    .alert-banner p {
+        margin: 0;
+        color: #e5e7eb;
+        font-size: 14px;
+    }
+
+    .pay-btn-sm {
+        background: #059669;
+        color: #ffffff !important;
+        padding: 10px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+        white-space: nowrap;
+    }
+
+    .pay-btn-sm:hover {
+        background: #047857;
+        transform: translateY(-2px);
+    }
+
+    .stat-badge {
+        font-size: 13px;
+        padding: 4px 10px;
+        border-radius: 12px;
+        margin-left: 8px;
+    }
+    .badge-unpaid {
+        background: rgba(220, 38, 38, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(220, 38, 38, 0.3);
+    }
+    .badge-paid {
+        background: rgba(5, 150, 105, 0.2);
+        color: #6ee7b7;
+        border: 1px solid rgba(5, 150, 105, 0.3);
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-
 <div class="dashboard-page">
 
     <!-- Header -->
     <div class="dashboard-header">
-
         <div>
             <h1>
-                Welcome,
-                {{ username|title }}
+                Welcome, {{ username|title }}
             </h1>
-
             <p>
                 Logged in as
                 <span class="role-badge">
@@ -34,12 +103,26 @@ Dashboard
         <div class="avatar">
             {{ username|first|upper }}
         </div>
-
     </div>
 
-    <!-- Statistics -->
-    <div class="stats-grid">
+    <!-- STUDENT OVERDUE / UNPAID FINE NOTIFICATION BANNER -->
+    {% if role == 'student' and has_unpaid_fines %}
+    <div class="alert-banner">
+        <div class="alert-banner-content">
+            <span class="alert-icon">⚠️</span>
+            <div>
+                <h4>Overdue Books & Outstanding Fine</h4>
+                <p>You have an overdue book and an unpaid fine of <strong>₹{{ unpaid_fine_total }}</strong>. Please clear your fine to avoid further late charges.</p>
+            </div>
+        </div>
+        <a href="{% url 'student_fines' %}" class="pay-btn-sm">
+            View Fines & Pay
+        </a>
+    </div>
+    {% endif %}
 
+    <!-- Common Statistics -->
+    <div class="stats-grid">
         <div class="dashboard-card">
             <h5>Total Books</h5>
             <h2>{{ total_books }}</h2>
@@ -59,176 +142,126 @@ Dashboard
             <h5>Members</h5>
             <h2>{{ members }}</h2>
         </div>
-
     </div>
+
+    <!-- ROLE SPECIFIC FINE & PAYMENT STATS -->
+    {% if role == 'student' %}
+    <div class="dashboard-section">
+        <h3>My Fines</h3>
+        <div class="stats-grid" style="margin-bottom: 0;">
+            <div class="dashboard-card" style="border-left: 4px solid {% if unpaid_fine_total > 0 %}#dc2626{% else %}#059669{% endif %};">
+                <h5>Total Unpaid Fine</h5>
+                <h2>₹{{ unpaid_fine_total }}</h2>
+                <p style="margin-top: 10px; margin-bottom: 15px; color: #afb3b7;">
+                    {% if unpaid_fines_count > 0 %}
+                        {{ unpaid_fines_count }} overdue item{{ unpaid_fines_count|pluralize }} requiring payment
+                    {% else %}
+                        No outstanding fines! All books clear.
+                    {% endif %}
+                </p>
+                <a href="{% url 'student_fines' %}" class="nav-btn" style="display: inline-block;">
+                    View Fines
+                </a>
+            </div>
+        </div>
+    </div>
+    {% elif role == 'admin' or role == 'librarian' %}
+    <div class="dashboard-section">
+        <h3>Fine & Payment Management</h3>
+        <div class="stats-grid" style="margin-bottom: 20px;">
+            <div class="dashboard-card" style="border-left: 4px solid #dc2626;">
+                <h5>Total Unpaid Fines</h5>
+                <h2>{{ total_unpaid_fines_count }}</h2>
+                <p style="color: #fca5a5; margin-top: 8px;">Pending: ₹{{ total_unpaid_amount }}</p>
+            </div>
+
+            <div class="dashboard-card" style="border-left: 4px solid #059669;">
+                <h5>Total Paid Fines</h5>
+                <h2>{{ total_paid_fines_count }}</h2>
+                <p style="color: #6ee7b7; margin-top: 8px;">Transactions settled</p>
+            </div>
+
+            <div class="dashboard-card" style="border-left: 4px solid #2563eb;">
+                <h5>Total Collected Amount</h5>
+                <h2>₹{{ total_collected_amount }}</h2>
+                <p style="color: #afb3b7; margin-top: 8px;">Total revenue collected</p>
+            </div>
+        </div>
+        <a href="{% url 'librarian_payments' %}" class="login-btn" style="text-decoration: none; display: inline-block;">
+            View Fine Payments & Reports →
+        </a>
+    </div>
+    {% endif %}
 
     <!-- Quick Actions -->
     <div class="dashboard-section">
-
         <h3>Quick Actions</h3>
 
         <div class="action-grid">
-
             <!-- Everyone -->
-            <a href="{% url 'book_list' %}"
-               class="action-card">
-
-                <h4>Books</h4>
-
-                <p>
-                    Browse library books
-                </p>
-
+            <a href="{% url 'book_list' %}" class="action-card">
+                <h4>📚 Browse Books</h4>
+                <p>Explore library collection and catalogue</p>
             </a>
 
-            <!-- Admin & Librarian -->
+            <!-- Admin & Librarian Actions -->
             {% if role == 'admin' or role == 'librarian' %}
+                <a href="{% url 'add_book' %}" class="action-card">
+                    <h4>➕ Add Book</h4>
+                    <p>Add new books to inventory</p>
+                </a>
 
-            <a href="{% url 'add_book' %}"
-               class="action-card">
+                <a href="{% url 'issued_books' %}" class="action-card">
+                    <h4>📖 Issued Books</h4>
+                    <p>View issued books & process returns</p>
+                </a>
 
-                <h4>Add Book</h4>
+                <a href="{% url 'issue_book' %}" class="action-card">
+                    <h4>✍️ Issue Book</h4>
+                    <p>Manually issue a book to a member</p>
+                </a>
 
-                <p>
-                    Add a new book
-                </p>
+                <a href="{% url 'book_requests' %}" class="action-card">
+                    <h4>📥 Book Requests</h4>
+                    <p>Review & approve student borrowing requests</p>
+                </a>
 
-            </a>
-
-            <a href="{% url 'issued_books' %}"
-               class="action-card">
-
-                <h4>Issued Books</h4>
-
-                <p>
-                    View all issued books
-                </p>
-
-            </a>
-
-            <a href="{% url 'issue_book' %}"
-               class="action-card">
-
-                <h4>Issue Book</h4>
-
-                <p>
-                    Issue a book to a member
-                </p>
-
-            </a>
-
-            {% if role == 'admin' or role == 'librarian' %}
-
-<a href="{% url 'book_requests' %}"
-   class="action-card">
-
-    <h4>Book Requests</h4>
-
-    <p>
-        Review student requests
-    </p>
-
-</a>
-
-{% endif %}
-
+                <a href="{% url 'librarian_payments' %}" class="action-card">
+                    <h4>💳 Fine Payments</h4>
+                    <p>Track all overdue fines & transaction receipts</p>
+                </a>
             {% endif %}
 
-            <!-- Student -->
+            <!-- Student Actions -->
             {% if role == 'student' %}
+                <a href="{% url 'issued_books' %}" class="action-card">
+                    <h4>📖 My Borrowed Books</h4>
+                    <p>View your active issues and due dates</p>
+                </a>
 
-            <div class="action-card">
-
-                <h4>Student Access</h4>
-
-                <p>
-                    Browse available books and
-                    view your account
-                </p>
-
-            </div>
-
+                <a href="{% url 'student_fines' %}" class="action-card">
+                    <h4>💳 My Fines & Receipts</h4>
+                    <p>Check overdue fines & make online payments</p>
+                </a>
             {% endif %}
-
         </div>
-
-    </div>
-
-    <!-- Role Specific Section -->
-    <div class="dashboard-section">
-
-        <h3>
-            Dashboard Overview
-        </h3>
-
-        <div class="user-card">
-
-            {% if role == 'admin' %}
-
-                <h4>
-                    Administrator Panel
-                </h4>
-
-                <p>
-                    You have complete access to
-                    the Library Management System.
-                </p>
-
-                <ul>
-                    <li>Manage books</li>
-                    <li>Manage members</li>
-                    <li>Manage transactions</li>
-                    <li>View reports</li>
-                    <li>Configure settings</li>
-                </ul>
-
-            {% elif role == 'librarian' %}
-
-                <h4>
-                    Librarian Panel
-                </h4>
-
-            {% else %}
-
-                <h4>
-                    Student Panel
-                </h4>
-
-
-            {% endif %}
-
-        </div>
-
     </div>
 
     <!-- User Information -->
     <div class="dashboard-section">
-
-        <h3>
-            User Information
-        </h3>
-
+        <h3>User Information</h3>
         <div class="user-card">
-
             <div>
-                <strong>Name:</strong>
-                {{ username|title }}
+                <strong>Name:</strong> {{ username|title }}
             </div>
-
             <div>
-                <strong>Role:</strong>
-                {{ role|title }}
+                <strong>Role:</strong> {{ role|title }}
             </div>
-
             <div>
-                <strong>Status:</strong>
-                Active
+                <strong>Status:</strong> <span style="color: #6ee7b7;">● Active</span>
             </div>
-
         </div>
-
     </div>
 
 </div>
-
 {% endblock %}
