@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Books
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/book_list.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="book-list-container">
+
+    <div class="book-list-card">
+
+        <!-- Header -->
+        <div class="header-section">
+
+            <div>
+                <h1>Library Books</h1>
+                <p>Manage your library collection</p>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                {% if request.user.profile.role == 'admin' or request.user.profile.role == 'librarian' %}
+                    <a href="{% url 'add_book' %}"
+                       class="add-btn">
+                        + Add Book
+                    </a>
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+        <!-- Search -->
+        <div class="search-section">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search books...">
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+
+            <table id="bookTable">
+
+                <thead>
+
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Category</th>
+                        <th>Available</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for book in books %}
+
+                    <tr>
+
+                        <td>
+                            {{ book.title }}
+                        </td>
+
+                        <td>
+                            {{ book.author }}
+                        </td>
+
+                        <td>
+                            {{ book.category }}
+                        </td>
+
+                        <td>
+                            <span class="badge">
+                                {{ book.available_copies }}
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <!-- ADMIN / LIBRARIAN -->
+                            {% if request.user.profile.role == 'admin' or request.user.profile.role == 'librarian' %}
+
+                                <a href="{% url 'edit_book' book.id %}"
+                                   class="edit-btn">
+                                    Edit
+                                </a>
+
+                                <a href="{% url 'delete_book' book.id %}"
+                                   class="delete-btn"
+                                   onclick="return confirm('Delete this book?');">
+                                    Delete
+                                </a>
+
+                            <!-- STUDENT -->
+                            {% elif request.user.profile.role == 'student' %}
+
+                                {% if book.available_copies > 0 %}
+
+                                    <a href="{% url 'request_book' book.id %}"
+                                       class="request-btn">
+                                        Request Book
+                                    </a>
+
+                                {% else %}
+
+                                    <span class="unavailable">
+                                        Not Available
+                                    </span>
+
+                                {% endif %}
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="5"
+                            class="empty">
+                            No books found
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/book_list.js' %}"></script>
+{% endblock %}

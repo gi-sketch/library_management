@@ -1,0 +1,181 @@
+.login-page{
+    min-height:100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d1f23,
+            #132e35,
+            #2d4a53
+        );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:50px;
+}
+
+.login-left{
+    width:50%;
+    padding:60px;
+}
+
+.login-left h1{
+    color:white;
+    font-size:60px;
+    margin-bottom:20px;
+}
+
+.login-left p{
+    color:#afb3b7;
+    font-size:20px;
+    margin-bottom:40px;
+}
+
+.feature{
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    padding:18px;
+
+    margin-bottom:15px;
+
+    border-radius:12px;
+
+    color:white;
+
+    backdrop-filter:blur(10px);
+}
+
+.login-right{
+    width:50%;
+
+    display:flex;
+
+    justify-content:center;
+}
+
+.login-card{
+
+    width:470px;
+    min-width:470px;
+
+    padding:50px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    backdrop-filter:blur(20px);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    border-radius:25px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.3);
+}
+
+.login-card h2{
+    color:white;
+    margin-bottom:10px;
+
+    white-space: nowrap;   /* keep text on one line */
+    font-size:32px;
+}
+
+.subtitle{
+    color:#afb3b7;
+    margin-bottom:30px;
+}
+
+.input-group{
+    margin-bottom:20px;
+}
+
+.input-group label{
+    display:block;
+    color:#afb3b7;
+    margin-bottom:10px;
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    color:white;
+
+    outline:none;
+}
+
+.input-group input::placeholder{
+    color:#69818d;
+}
+
+.login-btn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#69818d;
+
+    color:white;
+
+    font-size:16px;
+
+    margin-top:10px;
+
+    transition:.3s;
+}
+
+.login-btn:hover{
+    background:#5a636a;
+}
+
+.register-link{
+    text-align:center;
+
+    margin-top:25px;
+
+    color:#afb3b7;
+}
+
+.register-link a{
+    color:white;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.alert-message{
+    background:#5a636a;
+
+    padding:15px;
+
+    border-radius:10px;
+
+    color:white;
+
+    margin-bottom:20px;
+}
+
+.login-submit-btn:hover{
+    background:#5a636a;
+}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Issue Book
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/add_book.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="add-book-container">
+
+    <div class="book-card">
+
+        <div class="card-header">
+            <h1>Issue Book</h1>
+            <p>Issue a book to a library member</p>
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Member</label>
+                    {{ form.member }}
+                </div>
+
+                <div class="form-group">
+                    <label>Book</label>
+                    {{ form.book }}
+                </div>
+
+                <div class="form-group">
+                    <label>Due Date</label>
+                    {{ form.due_date }}
+                </div>
+
+            </div>
+
+            <div class="button-container">
+
+                <button type="submit"
+                        class="save-btn">
+                    Issue Book
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

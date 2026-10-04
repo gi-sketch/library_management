@@ -1,0 +1,101 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0d1f23;
+    color:#ffffff;
+    font-family:'Segoe UI',sans-serif;
+}
+
+.navbar-custom{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:1000;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 60px;
+
+    background:rgba(19,46,53,0.9);
+    backdrop-filter:blur(15px);
+
+    border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.logo{
+    font-size:24px;
+    font-weight:700;
+    color:#ffffff;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#afb3b7;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#ffffff;
+}
+
+.user-name{
+    color:#ffffff;
+    font-weight:600;
+    margin-right:10px;
+}
+
+.nav-btn{
+    padding:10px 18px;
+    border:1px solid #69818d;
+    border-radius:10px;
+    color:#ffffff !important;
+}
+
+.login-btn{
+    background:#69818d;
+    color:#fff !important;
+    padding:10px 20px;
+    border-radius:10px;
+}
+
+.login-btn:hover,
+.nav-btn:hover{
+    background:#2d4a53;
+}
+
+main{
+    padding-top:90px;
+}
+
+.nav-btn,
+.login-btn{
+    display:inline-block;
+    padding:12px 25px;
+    border-radius:10px;
+    text-decoration:none;
+    white-space:nowrap;
+    flex:0 0 auto;      /* don't grow or shrink */
+}
+
+.nav-btn{
+    border:1px solid #69818d;
+    color:#fff !important;
+}
+
+.login-btn{
+    background:#69818d;
+    color:#fff !important;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}

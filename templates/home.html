@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <h1>
+            Smart Library
+            Management System
+        </h1>
+
+        <p>
+            Manage books, members,
+            borrowing, returns,
+            fines and analytics
+            through one modern platform.
+        </p>
+
+        <div class="hero-buttons">
+
+            {% if request.user.is_authenticated %}
+
+                <a href="{% url 'dashboard' %}"
+                   class="primary-btn">
+                    Go to Dashboard
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="primary-btn">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}"
+                   class="secondary-btn">
+                    Register
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        <div class="dashboard-card">
+
+            <div class="small-card">
+                <h4>Total Books</h4>
+                <h2>2450</h2>
+            </div>
+
+            <div class="small-card">
+                <h4>Members</h4>
+                <h2>520</h2>
+            </div>
+
+            <div class="small-card">
+                <h4>Issued</h4>
+                <h2>650</h2>
+            </div>
+
+            <div class="small-card">
+                <h4>Returns</h4>
+                <h2>620</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section
+    class="features"
+    id="features">
+
+    <h2>
+        Features
+    </h2>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <h3>Book Management</h3>
+            <p>Add, update and manage books.</p>
+        </div>
+
+        <div class="feature-card">
+
+            <h3>Members</h3>
+            <p>Manage students and staff.</p>
+        </div>
+
+        <div class="feature-card">
+
+            <h3>Issue & Return</h3>
+            <p>Track borrowing history.</p>
+        </div>
+
+        <div class="feature-card">
+
+            <h3>Analytics</h3>
+            <p>Visual dashboard insights.</p>
+        </div>
+
+        <div class="feature-card">
+
+            <h3>Fine Calculation</h3>
+            <p>Automatic overdue calculation.</p>
+        </div>
+
+        <div class="feature-card">
+
+            <h3>Search</h3>
+            <p>Quickly find books and members.</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

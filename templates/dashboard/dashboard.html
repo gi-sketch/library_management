@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-page">
+
+    <!-- Header -->
+    <div class="dashboard-header">
+
+        <div>
+            <h1>
+                Welcome,
+                {{ username|title }}
+            </h1>
+
+            <p>
+                Logged in as
+                <span class="role-badge">
+                    {{ role|title }}
+                </span>
+            </p>
+        </div>
+
+        <div class="avatar">
+            {{ username|first|upper }}
+        </div>
+
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+
+        <div class="dashboard-card">
+            <h5>Total Books</h5>
+            <h2>{{ total_books }}</h2>
+        </div>
+
+        <div class="dashboard-card">
+            <h5>Issued Books</h5>
+            <h2>{{ issued_books }}</h2>
+        </div>
+
+        <div class="dashboard-card">
+            <h5>Available Books</h5>
+            <h2>{{ available_books }}</h2>
+        </div>
+
+        <div class="dashboard-card">
+            <h5>Members</h5>
+            <h2>{{ members }}</h2>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-section">
+
+        <h3>Quick Actions</h3>
+
+        <div class="action-grid">
+
+            <!-- Everyone -->
+            <a href="{% url 'book_list' %}"
+               class="action-card">
+
+                <h4>Books</h4>
+
+                <p>
+                    Browse library books
+                </p>
+
+            </a>
+
+            <!-- Admin & Librarian -->
+            {% if role == 'admin' or role == 'librarian' %}
+
+            <a href="{% url 'add_book' %}"
+               class="action-card">
+
+                <h4>Add Book</h4>
+
+                <p>
+                    Add a new book
+                </p>
+
+            </a>
+
+            <a href="{% url 'issued_books' %}"
+               class="action-card">
+
+                <h4>Issued Books</h4>
+
+                <p>
+                    View all issued books
+                </p>
+
+            </a>
+
+            <a href="{% url 'issue_book' %}"
+               class="action-card">
+
+                <h4>Issue Book</h4>
+
+                <p>
+                    Issue a book to a member
+                </p>
+
+            </a>
+
+            {% if role == 'admin' or role == 'librarian' %}
+
+<a href="{% url 'book_requests' %}"
+   class="action-card">
+
+    <h4>Book Requests</h4>
+
+    <p>
+        Review student requests
+    </p>
+
+</a>
+
+{% endif %}
+
+            {% endif %}
+
+            <!-- Student -->
+            {% if role == 'student' %}
+
+            <div class="action-card">
+
+                <h4>Student Access</h4>
+
+                <p>
+                    Browse available books and
+                    view your account
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Role Specific Section -->
+    <div class="dashboard-section">
+
+        <h3>
+            Dashboard Overview
+        </h3>
+
+        <div class="user-card">
+
+            {% if role == 'admin' %}
+
+                <h4>
+                    Administrator Panel
+                </h4>
+
+                <p>
+                    You have complete access to
+                    the Library Management System.
+                </p>
+
+                <ul>
+                    <li>Manage books</li>
+                    <li>Manage members</li>
+                    <li>Manage transactions</li>
+                    <li>View reports</li>
+                    <li>Configure settings</li>
+                </ul>
+
+            {% elif role == 'librarian' %}
+
+                <h4>
+                    Librarian Panel
+                </h4>
+
+            {% else %}
+
+                <h4>
+                    Student Panel
+                </h4>
+
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- User Information -->
+    <div class="dashboard-section">
+
+        <h3>
+            User Information
+        </h3>
+
+        <div class="user-card">
+
+            <div>
+                <strong>Name:</strong>
+                {{ username|title }}
+            </div>
+
+            <div>
+                <strong>Role:</strong>
+                {{ role|title }}
+            </div>
+
+            <div>
+                <strong>Status:</strong>
+                Active
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

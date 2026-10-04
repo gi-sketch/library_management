@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Book Requests
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/book_requests.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="book-list-container">
+
+    <div class="book-list-card">
+
+        <!-- Header -->
+        <div class="header-section">
+
+            <div>
+                <h1>Book Requests</h1>
+                <p>
+                    Review student borrowing requests
+                </p>
+            </div>
+
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Request Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for request in requests %}
+
+                    <tr>
+
+                        <td>
+                            {{ request.student.username }}
+                        </td>
+
+                        <td>
+                            {{ request.book.title }}
+                        </td>
+
+                        <td>
+                            {{ request.request_date }}
+                        </td>
+
+                        <td>
+
+                            {% if request.status == 'pending' %}
+
+                                <span class="pending-badge">
+                                    Pending
+                                </span>
+
+                            {% elif request.status == 'approved' %}
+
+                                <span class="approved-badge">
+                                    Approved
+                                </span>
+
+                            {% else %}
+
+                                <span class="rejected-badge">
+                                    Rejected
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if request.status == 'pending' %}
+
+                                <a href="{% url 'approve_request' request.id %}"
+                                   class="approve-btn">
+                                    Approve
+                                </a>
+
+                                <a href="{% url 'reject_request' request.id %}"
+                                   class="reject-btn">
+                                    Reject
+                                </a>
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5"
+                            class="empty">
+
+                            No requests found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

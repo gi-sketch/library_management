@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="register-page">
+
+    <!-- Left Section -->
+    <div class="register-left">
+
+        <h1>
+            Join Our Library
+        </h1>
+
+        <p>
+            Create an account to access the
+            Library Management System and
+            explore books, borrowing,
+            analytics and more.
+        </p>
+
+        <div class="register-features">
+
+            <div class="feature">
+                Thousands of Books
+            </div>
+
+            <div class="feature">
+                Easy Borrow & Return
+            </div>
+
+            <div class="feature">
+                Personal Dashboard
+            </div>
+
+            <div class="feature">
+                Smart Search System
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Right Section -->
+    <div class="register-right">
+
+        <div class="register-card">
+
+            <h2>
+                Create Account
+            </h2>
+
+            <p class="subtitle">
+                Register to continue
+            </p>
+
+            {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger mb-3">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter email"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label>Phone</label>
+                    <input
+                        type="text"
+                        name="phone"
+                        placeholder="Enter phone number">
+                </div>
+
+                <div class="input-group">
+                    <label>Role</label>
+
+                    <select name="role">
+
+                        <option value="student">
+                            Student
+                        </option>
+
+                        <option value="librarian">
+                            Librarian
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Create password"
+                        required>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input
+                        type="password"
+                        name="confirm_password"
+                        placeholder="Confirm password"
+                        required>
+                </div>
+
+                <button class="register-btn">
+                    Register
+                </button>
+
+            </form>
+
+            <div class="login-link">
+
+                Already registered?
+
+                <a href="{% url 'login' %}">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock %}

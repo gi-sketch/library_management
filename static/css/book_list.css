@@ -1,0 +1,208 @@
+.book-list-container{
+
+    min-height:100vh;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d1f23,
+            #132e35,
+            #2d4a53
+        );
+
+    padding:120px 50px;
+}
+
+.book-list-card{
+
+    background:
+        rgba(255,255,255,.05);
+
+    backdrop-filter:blur(20px);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    border-radius:25px;
+
+    padding:40px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.3);
+}
+
+.header-section{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+}
+
+.header-section h1{
+    color:white;
+}
+
+.header-section p{
+    color:#afb3b7;
+}
+
+.add-btn{
+
+    background:#69818d;
+
+    color:white;
+
+    padding:12px 25px;
+
+    border-radius:12px;
+
+    text-decoration:none;
+
+    transition:.3s;
+}
+
+.add-btn:hover{
+    background:#5a636a;
+}
+
+.search-section{
+    margin-bottom:25px;
+}
+
+.search-section input{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    color:white;
+
+    outline:none;
+}
+
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+thead{
+    background:#2d4a53;
+}
+
+th{
+    color:white;
+
+    padding:20px;
+
+    text-align:left;
+}
+
+td{
+
+    padding:18px;
+
+    color:#afb3b7;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.05);
+}
+
+tr:hover{
+    background:
+        rgba(255,255,255,.03);
+}
+
+.badge{
+
+    background:#69818d;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    color:white;
+}
+
+.edit-btn{
+
+    background:#69818d;
+
+    color:white;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    text-decoration:none;
+
+    margin-right:10px;
+}
+
+.delete-btn{
+
+    background:#5a636a;
+
+    color:white;
+
+    padding:8px 15px;
+
+    border-radius:8px;
+
+    text-decoration:none;
+}
+
+.empty{
+    text-align:center;
+    padding:50px;
+}
+
+.issued-badge{
+
+    background:#69818d;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:20px;
+
+    font-size:14px;
+}
+
+.returned-badge{
+
+    background:#2d4a53;
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:20px;
+
+    font-size:14px;
+}
+
+.book-cover{
+    width:60px;
+    height:80px;
+    object-fit:cover;
+    border-radius:8px;
+    border:2px solid #2d4a53;
+}
