@@ -164,7 +164,3 @@ RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'your_key_secret')
 4. **Return Book**:
    - The Librarian navigates to `/transactions/issued/` and clicks **Return Book** to finalize the transaction and restore book stock.
 
----
-
-## 📄 License
-This project is open-source and available under the [MIT License](LICENSE).
